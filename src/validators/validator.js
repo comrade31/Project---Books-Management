@@ -8,6 +8,7 @@ const isValidEmail = function (value) {
   if (emailRegex.test(value)) return true;
 };
 
+
 //============================// idCharacterValid //============================
 
 const isIdValid = function (value) {
@@ -25,7 +26,7 @@ const isValidString = function (value) {
 //==============================// isValidName //===============================
 
 const isValidName = function (name) {
-  if (/^[a-zA-Z ]+$/.test(name)) {
+  if (/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/.test(name)) {
     return true;
   }
 };
@@ -38,14 +39,27 @@ const isValidMobile = function (mobile) {
  }
 }
 
-//==============================// isValidImage //===============================
+//==============================// isValidPincode //===============================
 
-const isValidImage = function (image) {
-    if (/^(https\:\/\/.*\.(?:png|jpg|jpeg))/.test(image)){
+const isValidPincode = function (pincode) {
+    if (/^[1-9][0-9]{5}$/.test(pincode)){
        return true
     }
    }
 
+
+//==============================// isValidPassword //===============================
+
+   const isValidPassword = function (pwd) {
+    let passwordRegex =
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/;
+  
+    if (passwordRegex.test(pwd)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 //=============================// module exports //==============================
 
-module.exports = { isValidEmail, isIdValid, isValidString,isValidName,isValidMobile,isValidImage}
+module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode}
