@@ -113,6 +113,6 @@ const loginUser = async function (req, res) {
 
 
 module.exports = { createUser }
-module.exports = { loginUser }
+module.exports.loginUser = loginUser
 
 
