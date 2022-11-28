@@ -2,7 +2,7 @@ const userModel = require("../Model/userModel")
 const { isValidString, isValidName, isValidMobile, isValidEmail, isValidPassword, isValidPincode } = require("../validators/validator")
 
 
-     //<<<<<<<<------------------- Create-User -------------------->>>>>>>>>>>>>
+//<<<<<<<<------------------- Create-User -------------------->>>>>>>>>>>>>
 
 const createUser = async function (req, res) {
     try {
@@ -10,10 +10,10 @@ const createUser = async function (req, res) {
         let { title, name, phone, email, password } = userData
 
         // Validaton for Body -
-    if(Object.keys(userData).length===0){
-        return res.status(400).send({status:false,message:"Body should not be Empty"})
+        if (Object.keys(userData).length === 0) {
+            return res.status(400).send({ status: false, message: "Body should not be Empty" })
         }
-        
+
         // Validaton for Title -
         if (!title) {
             return res.status(400).send({ status: false, message: "Tilte must reqired !" })
@@ -22,7 +22,7 @@ const createUser = async function (req, res) {
         if (!name) {
             return res.status(400).send({ status: false, message: "Name must reqired !" })
         }
-        
+
         if (!isValidName(name)) {
             return res.status(400).send({ status: false, message: "Please Enter Valid Name!" })
         }
@@ -32,7 +32,7 @@ const createUser = async function (req, res) {
             return res.status(400).send({ status: false, message: "phone must reqired !" })
         }
         if (!isValidMobile(phone)) {
-            return res.status(400).send({ status: false, message: "Please Enter Valid Name!" })
+            return res.status(400).send({ status: false, message: "Please Enter Valid Phone !" })
         }
         const searchPhone = await userModel.findOne({ phone: phone })
         if (searchPhone) {
@@ -60,10 +60,14 @@ const createUser = async function (req, res) {
         }
 
         // Validaton for Address -
+        if (userData.address.city) {
+            if (!isValidName(userData.address.city)) {
+                return res.status(400).send({ status: false, message: "Enter Valid City !" })
+            }
+        }
         if (userData.address.pincode) {
             if (!isValidPincode(userData.address.pincode)) {
                 return res.status(400).send({ status: false, message: "Enter Valid Pincode !" })
-
             }
         }
 
