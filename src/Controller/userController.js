@@ -1,5 +1,6 @@
 const userModel = require("../Model/userModel")
 const { isValidString, isValidName, isValidMobile, isValidEmail, isValidPassword, isValidPincode } = require("../validators/validator")
+const jwt = require('jsonwebtoken')
 
 
 //<<<<<<<<------------------- Create-User -------------------->>>>>>>>>>>>>
@@ -79,6 +80,39 @@ const createUser = async function (req, res) {
     }
 
 }
+
+
+// ======================================Login users==========================================
+
+const loginUser = async function (req, res) {
+    let emailId = req.body.emailId;
+    let password = req.body.password;
+  try{
+    let user = await userModel.findOne({ emailId: emailId, password: password });
+    if (!user)
+      return res.send({
+        status: false,
+        msg: "username or the password is not corerct",
+      });
+  
+  
+    let token = jwt.sign(
+      {
+        userId: user._id.toString(),
+      },
+      "functionup-secret-key",
+      {expiresIn: '3m'}
+    );
+    res.setHeader("x-auth-token", token);
+    res.status(200).send({ status: true, data: token });
+  }catch(Err){
+    return res.status(400).send({status:false,msg:"username or password is not correct"});
+  }
+
+};
+
+
 module.exports = { createUser }
+module.exports = { loginUser }
 
 
