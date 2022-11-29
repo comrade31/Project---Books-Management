@@ -16,7 +16,7 @@ const createUser = async function (req, res) {
         }
 
         // Validaton for Title -
-        if (!title || !isValidString(title)) {
+        if (!title) {
             return res.status(400).send({ status: false, message: "Title must reqired !" })
         }
         let titles = ["Mr","Mrs","Miss"]
@@ -24,7 +24,7 @@ const createUser = async function (req, res) {
             return res.status(400).send({ status: false, message: "Provide a Valid Title !" })
         }
         // Validaton for Name -
-        if (!name || !isValidString(name)) {
+        if (!name ) {
             return res.status(400).send({ status: false, message: "Name must reqired !" })
         }
 
@@ -33,7 +33,7 @@ const createUser = async function (req, res) {
         }
    
         // Validaton for Phone -
-        if (!phone  || !isValidString(phone)) {
+        if (!phone) {
             return res.status(400).send({ status: false, message: "phone must reqired !" })
         }
         if (!isValidMobile(phone)) {
@@ -45,7 +45,7 @@ const createUser = async function (req, res) {
         }
 
         // Validaton for Email -
-        if (!email || !isValidString(email)) {
+        if (!email ) {
             return res.status(400).send({ status: false, message: "email must reqired !" })
         }
         if (!isValidEmail(email)) {
@@ -57,7 +57,7 @@ const createUser = async function (req, res) {
         }
 
         // Validaton for Password -
-        if (!password || !isValidString(password)) {
+        if (!password) {
             return res.status(400).send({ status: false, message: "password must reqired !" })
         }
         if (!isValidPassword(password)) {
