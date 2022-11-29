@@ -129,8 +129,37 @@ let finalData = {findBook,reviewsData:[]}
 return res.status(200).send({staus:true,message:"Book-list",data:finalData})
 }
 
+//<<<<<<<<------------------- Delete Book by Params -------------------->>>>>>>>>>>>>
+
+const deleteBook = async function (req, res) {
+    try {
+        const bookId = req.params.bookId
+      
+        if (!bookId) {
+            return res.status(400).send({ status: false, msg: "bookId is required." })
+        }
+        if (!isIdValid(bookId)) {
+            return res.status(400).send({ status:false,msg:"bookId is not valid!" })
+        }
+        const bookDetails = await bookModel.findById(bookId)
+        if (!bookDetails) {
+            return res.status(404).send({ status: false, msg: "No data found!" })
+        }
+        
+        if (bookDetails.isDeleted == true) {
+            return res.status(404).send({ status: false, msg: "No book found!" })
+        }
+        const deleteData = await bookModel.updateOne({ _id: bookId }, { $set: { isDeleted: true } }, { new: true })
+        return res.status(200).send({ status: true, msg: "book deleted succesfully", })
+    }
+    catch (err) {
+        return res.status(500).send({ status: false, msg: err.message })
+    }
+}
+
 
 module.exports.createBook = createBook
 module.exports.getBookDetails = getBookDetails
 module.exports.updateBook = updateBook
 module.exports.getBookByParams = getBookByParams
+module.exports.deleteBook = deleteBook

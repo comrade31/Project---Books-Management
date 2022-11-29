@@ -18,4 +18,6 @@ router.get("/books/:bookId", bookController.getBookByParams)
 
 router.put("/books/:bookId", bookController.updateBook)
 
+router.delete("/books/:bookId",bookController.deleteBook)
+
 module.exports = router;
