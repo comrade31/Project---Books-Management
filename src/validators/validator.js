@@ -59,7 +59,28 @@ const isValidPincode = function (pincode) {
     } else {
       return false;
     }
-  };
+  }
+  
+    //==============================// isValidISBN //===============================
+
+    const isValidISBN = function(ISBN){
+      let ISBNRegex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)/
+      if(ISBNRegex.test(ISBN)){
+        return true
+      }else{
+        return false
+      }
+    }
+  //==============================// isValidDate //===============================
+      const isValidDate = function(value){
+        let dateFormatRegex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/
+       if(dateFormatRegex.test(value)){
+        return true
+       }else{
+        return false
+       } 
+      }
+
 //=============================// module exports //==============================
 
-module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode}
+module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode, isValidISBN, isValidDate}
