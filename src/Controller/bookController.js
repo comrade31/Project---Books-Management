@@ -61,7 +61,25 @@ const getBookDetails = async function (req, res) {
     }
 }
 
+//<<<<<<<<------------------- Get Book by Params -------------------->>>>>>>>>>>>>
 
+const  getBookByParams = async function (req, res) {
+    let bookId = req.params.bookId
+
+   if(!isIdValid(bookId)){
+     return  res.status(400).send({status:false,message:"Invalid Book-Id !"})
+   }
+// finding Books -
+const findBook = await bookModel.findOne({_id:bookId})
+if(!findBook){
+return res.status(400).send({status:false,msg:"No Book found !"})
+
+// finding Review -
+// const findReview = await reviewModel.findOne({_id:bookId})
+}
+let finalData = {findBook,reviewsData:[]}
+return res.status(200).send({staus:true,message:"Book-list",data:finalData})
+}
 /*************************************UpdateBook**************************************************/
 
 const updateBook = async function (req, res) {
@@ -109,25 +127,6 @@ const updateBook = async function (req, res) {
     }
 }
 
-//<<<<<<<<------------------- Get Book by Params -------------------->>>>>>>>>>>>>
-
-const  getBookByParams = async function (req, res) {
-    let bookId = req.params.bookId
-
-   if(!isIdValid(bookId)){
-     return  res.status(400).send({status:false,message:"Invalid Book-Id !"})
-   }
-// finding Books -
-const findBook = await bookModel.findOne({_id:bookId})
-if(!findBook){
-return res.status(400).send({status:false,msg:"No Book found !"})
-
-// finding Review -
-// const findReview = await reviewModel.findOne({_id:bookId})
-}
-let finalData = {findBook,reviewsData:[]}
-return res.status(200).send({staus:true,message:"Book-list",data:finalData})
-}
 
 //<<<<<<<<------------------- Delete Book by Params -------------------->>>>>>>>>>>>>
 

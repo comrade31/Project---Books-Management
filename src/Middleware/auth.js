@@ -9,10 +9,9 @@ const authentication = async function(req, res, next){
         if(!token){
             res.status(401).send({status: false, message: "token must be present in request headers"})
         }
-        jwt.verify(token, "functionup-secret-key",
-        {expiresIn: '3m'}, (err, decode)=> {
+        jwt.verify(token, "functionup-secret-key", (err, decode)=> {
             if(err){
-                return res.status(400).send({status: false, message: "incorrect token"})
+                return res.status(400).send({status: false, message: err.message})
             }
             (decode == true)
             next()
@@ -25,9 +24,12 @@ const authentication = async function(req, res, next){
 //============================// authorisation //============================
 
 const authorisation = async function(req, res, next){
-  try{  
-    let decodeToken = jwt.verify(token, "functionup-secret-key",
-    {expiresIn: '3m'})
+  try{ 
+    const token = req.headers["x-api-key"]
+        if(!token){
+            res.status(401).send({status: false, message: "token must be present in request headers"})
+        } 
+    let decodeToken = jwt.verify(token, "functionup-secret-key",)
 
     if(!decodeToken){
         return res.status(400).send({status: false, message: "please enter valid token"})

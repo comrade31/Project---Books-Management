@@ -113,7 +113,7 @@ const loginUser = async function (req, res) {
         userId: user._id.toString(),
       },
       "functionup-secret-key",
-      {expiresIn: '3m'}
+      {expiresIn: '30m'}
     );
     res.setHeader("x-auth-token", token);
     res.status(200).send({ status: true, data: token });
