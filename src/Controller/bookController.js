@@ -45,9 +45,9 @@ const getBookDetails = async function (req, res) {
 
         const bookData = await bookModel.find({
             $and: [{ isDeleted: false }, queries],
-        }).select({ ISBN: 0, subcategory: 0, isDeleted: 0, deletedAt: 0,createdAt:0, updatedAt:0 , __v:0}).sort({ title: 1 });
+        }).select({ ISBN: 0, subcategory: 0, isDeleted: 0, deletedAt: 0,createdAt:0, updatedAt:0 , __v:0}).collation({locale:"en"}).sort({ title: 1 });
 
-        if (Object.keys(bookData).length == 0) return res.status(404).send({ status: false, message: "no document found" })
+        if (bookData.length == 0) return res.status(404).send({ status: false, message: "no document found" })
 
         res.status(200).send({ status: true, message: "Book List", data: bookData })
 
