@@ -22,4 +22,7 @@ router.delete("/books/:bookId",middleware.authentication, middleware.authorisati
 
 router.delete("/books/:bookId/review/:reviewId", reviewController.deleteReview)
 
+ router.post("/books/:bookId/review", reviewController.ceateReview)
+
+
 module.exports = router;

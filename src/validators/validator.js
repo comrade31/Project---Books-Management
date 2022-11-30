@@ -80,7 +80,15 @@ const isValidPincode = function (pincode) {
         return false
        } 
       }
+      //==============================// isValidRating //===============================
+
+      const isValidRating = function(rating){
+        let ratingFormatRegex = /([1-5])/
+        if(ratingFormatRegex.test(rating)){
+          return true
+        }
+      }
 
 //=============================// module exports //==============================
 
-module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode, isValidISBN, isValidDate}
+module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode, isValidISBN, isValidDate,isValidRating}

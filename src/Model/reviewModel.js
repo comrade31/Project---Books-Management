@@ -3,7 +3,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const reviewSchema = new mongoose.Schema( {
 bookId: {
     type:ObjectId,
-    ref:book
+    ref:"book"
 },
 reviewedBy: {
     type:String,
