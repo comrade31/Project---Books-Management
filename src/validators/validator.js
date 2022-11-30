@@ -84,9 +84,8 @@ const isValidPincode = function (pincode) {
 
       const isValidRating = function(rating){
         let ratingFormatRegex = /([1-5])/
-        if(ratingFormatRegex.test(rating)){
+        if(ratingFormatRegex.test(rating) && typeof(rating)==="number" )
           return true
-        }
       }
 
 //=============================// module exports //==============================

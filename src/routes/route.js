@@ -14,7 +14,7 @@ router.post("/books", middleware.authentication, middleware.authorisation, bookC
 
 router.get("/books", middleware.authentication,  bookController.getBookDetails)
 
-router.get("/books/:bookId",middleware.authentication, middleware.authorisation, bookController.getBookByParams)
+router.get("/books/:bookId", bookController.getBookByParams)
 
 router.put("/books/:bookId",middleware.authentication, middleware.authorisation, bookController.updateBook)
 

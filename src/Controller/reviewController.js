@@ -43,6 +43,7 @@ const ceateReview = async function (req, res) {
         if (!rating) {
             return res.status(400).send({ status: false, message: "Rating Must required !" })
         }
+        console.log(typeof(rating))
         if (!isValidRating(rating)) {
             return res.status(400).send({ status: false, message: "Please Enter Valid Rating Between 1-5 !" })
         }
@@ -52,7 +53,7 @@ const ceateReview = async function (req, res) {
         }
 
         // Validation for Params-BookId or Body-BookId same or Not -
-        const checkBookId = await bookModel.findOne({ $and: [{ _id: paramBookId }, { isDeleted: false }] })
+        const checkBookId = await bookModel.findOneAndUpdate({ $and: [{ _id: paramBookId }, { isDeleted: false }] },{ $inc: {reviews: 1} })
         if (!checkBookId) {
             return res.status(400).send({ status: false, message: "No book found !" })
         }
@@ -68,6 +69,7 @@ const ceateReview = async function (req, res) {
     }
 }
 
+//<<<<<<<<------------------- Delete Review -------------------->>>>>>>>>>>>>
 
 
 const deleteReview = async function (req, res) {

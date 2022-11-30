@@ -12,7 +12,7 @@ const createBook = async function (req, res) {
             return res.status(400).send({ status: false, message: "please enter some data in request body" })
         }
         if (!title) return res.status(400).send({ status: false, message: "Title must requied !" })
-        if (!isValidString(title)) return res.status(400).send({ status: false, message: "Please Enter valid Title" })
+        if (!isValidString(title) || !isValidName(title)) return res.status(400).send({ status: false, message: "Please Enter valid Title" })
         let checkTitle = await bookModel.findOne({ title: title })
         if (checkTitle) return res.status(400).send({ status: false, message: "title is already exist" })
 
@@ -74,11 +74,11 @@ const  getBookByParams = async function (req, res) {
 const findBook = await bookModel.findOne({_id:bookId})
 if(!findBook){
 return res.status(400).send({status:false,msg:"No Book found !"})
+}
 
 // finding Review -
-// const findReview = await reviewModel.findOne({_id:bookId})
-}
-let finalData = {findBook,reviewsData:[]}
+const findReview = await reviewModel.find({bookId:bookId})
+let finalData = {findBook,reviewsData:findReview}
 return res.status(200).send({staus:true,message:"Book-list",data:finalData})
 }
 /*************************************UpdateBook**************************************************/
