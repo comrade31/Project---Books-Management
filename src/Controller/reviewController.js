@@ -69,6 +69,49 @@ const ceateReview = async function (req, res) {
     }
 }
 
+//<<<<<<<<------------------- update Review -------------------->>>>>>>>>>>>>
+
+const updateReview = async function(req,res){
+    try{  
+      const bookId = req.params.bookId
+      if(!bookId) return res.status(400).send({status: false, message: "please enter bookId in path params"})
+      const reviewId = req.params.reviewId
+      if(!reviewId) return res.status(400).send({status: false, message: "please enter reviewId in path params"})
+  
+      const bookData = await bookModel.find({$and:[{_id: bookId, isDeleted: false}]})
+      if(bookData.length == 0) return res.status(400).send({status: false, message: "bookId is not exist"}) 
+      
+      const reviewData = await reviewModel.find({$and: [{_id: reviewId, isDeleted: false}]})
+      if(reviewData.length == 0) return res.status(400).send({status: false, message: "reviewId is not exist"})
+  
+      const data = req.body
+      const {reviewedBy, rating, review} = data
+  
+      if(Object.keys(data).length == 0) return res.status(400).send({status: false, message: "please provide data for updation"})
+  
+      if(!isValidName(reviewedBy) || !isValidString(reviewedBy)) return res.status(400).send({status: false, message: "please enter valid review's name"})
+  
+      if(!rating) return res.status(400).send({status: false, message: "rating must required"})
+      if(!isValidRating) return res.status(400).send({status: false, message: "please enter valid rating"})
+  
+      if(!isValidString(review)) return res.status(400).send({status: false, message: "please enter valid review"})
+  
+      const updateReview = await reviewModel.findOneAndUpdate(
+          {_id: reviewId, bookId: bookId, isDeleted: false},
+          {
+           reviewedBy: reviewedBy,
+           rating: rating,
+           review: review
+          },{new: true}
+      )
+      if(!updateReview) return res.status(400).send({status: false, message: "review not found"})
+      res.status(200).send({status: true, message: "data updated successfully", data: updateReview})
+      
+  }catch(err){
+      return res.status(500).send({status: false, message: err.message})
+  }
+  }
+
 //<<<<<<<<------------------- Delete Review -------------------->>>>>>>>>>>>>
 
 
@@ -94,3 +137,4 @@ const deleteReview = async function (req, res) {
 
 module.exports.ceateReview = ceateReview
 module.exports.deleteReview = deleteReview
+module.exports.updateReview = updateReview

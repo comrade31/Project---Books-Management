@@ -20,9 +20,12 @@ router.put("/books/:bookId",middleware.authentication, middleware.authorisation,
 
 router.delete("/books/:bookId",middleware.authentication, middleware.authorisation, bookController.deleteBook)
 
+router.post("/books/:bookId/review", reviewController.ceateReview)
+
+router.put("/books/:bookId/review/:reviewId", reviewController.updateReview)
+
 router.delete("/books/:bookId/review/:reviewId", reviewController.deleteReview)
 
- router.post("/books/:bookId/review", reviewController.ceateReview)
 
 
 module.exports = router;
