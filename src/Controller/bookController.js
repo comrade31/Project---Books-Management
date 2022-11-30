@@ -157,44 +157,9 @@ const deleteBook = async function (req, res) {
     }
 }
 
-const deletereview = async function(req,res){
-    const bookId = req.params.bookId
-    const reviewId = req.params.reviewId
-
-    if(!bookId){
-        return res.status(400).send({ status: false, msg: "bookId is required!" })
-    }
-    if(!reviewId){
-        return res.status(400).send({ status: false, msg: "reviewId is required!" })
-    }
-    if (!isIdValid(bookId)) {
-        return res.status(400).send({ status:false,msg:"bookId is not valid!" })
-    }
-    if (!isIdValid(reviewId)) {
-        return res.status(400).send({ status:false,msg:"reviewId is not valid!" })
-    }
-    const bookDetails = await bookModel.findById(bookId)
-    if (!bookDetails) {
-    return res.status(404).send({ status: false, msg: "No data found!" })
-    }
-    if (bookDetails.isDeleted == true) {
-        return res.status(404).send({ status: false, msg: "No book found!" })
-    }
-    const reviewDetails = await reviewModel.findById(reviewId)
-    if (!reviewDetails) {
-    return res.status(404).send({ status: false, msg: "No data found!" })
-    }
-    if(reviewDetails == true){
-        return res.status(404).send({ status: false, msg: "No review found!" })  
-    }
-    const deleteData = await reviewModel.updateOne({ _id: reviewId }, { $set: { isDeleted: true } })
-    return res.status(200).send({ status: true, msg: "review deleted succesfully", })
-}
-
 
 module.exports.createBook = createBook
 module.exports.getBookDetails = getBookDetails
 module.exports.updateBook = updateBook
 module.exports.getBookByParams = getBookByParams
 module.exports.deleteBook = deleteBook
-module.exports.deletereview = deletereview 
