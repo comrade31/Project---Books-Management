@@ -1,5 +1,6 @@
 const userModel = require("../Model/userModel")
 const { isValidString, isValidName, isValidMobile, isValidEmail, isValidPassword, isValidPincode } = require("../validators/validator")
+const reviewModel = require("../Model/reviewModel")
 const jwt = require('jsonwebtoken')
 
 
