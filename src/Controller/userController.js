@@ -9,30 +9,27 @@ const jwt = require('jsonwebtoken')
 const createUser = async function (req, res) {
     try {
         let userData = req.body
-        let { title, name, phone, email, password,address } = userData
+        let { title, name, phone, email, password, address } = userData
 
         // Validaton for Body -
         if (Object.keys(userData).length === 0) {
             return res.status(400).send({ status: false, message: "Body should not be Empty" })
         }
-
         // Validaton for Title -
         if (!title) {
             return res.status(400).send({ status: false, message: "Title must reqired !" })
         }
-        let titles = ["Mr","Mrs","Miss"]
-        if(!titles.includes(title)){
+        let titles = ["Mr", "Mrs", "Miss"]
+        if (!titles.includes(title)) {
             return res.status(400).send({ status: false, message: "Provide a Valid Title !" })
         }
         // Validaton for Name -
-        if (!name ) {
+        if (!name) {
             return res.status(400).send({ status: false, message: "Name must reqired !" })
         }
-
-        if (!isValidName(name)) {
+        if (!isValidString(name) || !isValidName(name)) {
             return res.status(400).send({ status: false, message: "Please Enter Valid Name!" })
         }
-   
         // Validaton for Phone -
         if (!phone) {
             return res.status(400).send({ status: false, message: "phone must reqired !" })
@@ -44,9 +41,8 @@ const createUser = async function (req, res) {
         if (searchPhone) {
             return res.status(400).send({ status: false, message: "Phone is already exist!" })
         }
-
         // Validaton for Email -
-        if (!email ) {
+        if (!email) {
             return res.status(400).send({ status: false, message: "email must reqired !" })
         }
         if (!isValidEmail(email)) {
@@ -56,34 +52,35 @@ const createUser = async function (req, res) {
         if (searchEmail) {
             return res.status(400).send({ status: false, message: "Email-Id is already exist!" })
         }
-
         // Validaton for Password -
         if (!password) {
             return res.status(400).send({ status: false, message: "password must reqired !" })
         }
         if (!isValidPassword(password)) {
-            return res.status(400).send({ status: false, message: "Password Must contain Capial-letter,Small-letter,Special-character Minumum-length-8 and Maximum-15  !" })
+            return res.status(400).send({ status: false, message: "Password Must contain atleast one Capial-letter, a special-character Min-length-8 and Maximum-15!" })
         }
-
-if(address) {
         // Validaton for Address -
-        
-        if( address.street && address.city && address.pincode){
-            
-        if (address.city) {
-            if (!isValidName(userData.address.city)) {
-                return res.status(400).send({ status: false, message: "Enter Valid City !" })
+        if (address) {
+            if (address.street && address.city && address.pincode) {
+                if (address.street) {
+                    if (!isValidString(userData.address.street)) {
+                        return res.status(400).send({ status: false, message: "Enter a valid Street" })
+                    }
+                }
+                if (address.city) {
+                    if (!isValidName(userData.address.city)) {
+                        return res.status(400).send({ status: false, message: "Enter Valid City !" })
+                    }
+                }
+                if (address.pincode) {
+                    if (!isValidPincode(userData.address.pincode)) {
+                        return res.status(400).send({ status: false, message: "Enter Valid Pincode !" })
+                    }
+                }
+            } else {
+                return res.status(400).send({ status: false, message: "Enter Address in a Valid !" })
             }
         }
-        if (address.pincode) {
-            if (!isValidPincode(userData.address.pincode)) {
-                return res.status(400).send({ status: false, message: "Enter Valid Pincode !" })
-            }
-        }
-    } else {
-        return res.status(400).send({ status: false, message: "Enter Address in a Valid !" })
-    }
-}
 
         const createUser = await userModel.create(userData)
         res.status(201).send({ status: true, message: 'Success', data: createUser })
@@ -95,37 +92,40 @@ if(address) {
 }
 
 
-// ======================================Login users==========================================
+//<<<<<<<<------------------- Login-User -------------------->>>>>>>>>>>>>
 
 const loginUser = async function (req, res) {
-    let emailId = req.body.emailId;
-    let password = req.body.password;
-  try{
-    let user = await userModel.findOne({ emailId: emailId, password: password });
-    if (!user)
-      return res.send({
-        status: false,
-        msg: "username or the password is not corerct",
-      });
-  
-  
-    let token = jwt.sign(
-      {
-        userId: user._id.toString(),
-      },
-      "functionup-secret-key",
-      {expiresIn: '30m'}
-    );
-    res.setHeader("x-auth-token", token);
-    res.status(200).send({ status: true, data: token });
-  }catch(Err){
-    return res.status(400).send({status:false,msg:"username or password is not correct"});
-  }
+    try {
+        let emailId = req.body.email;
+        let password = req.body.password;
 
+        if (Object.keys(req.body).length == 0) {
+            return res.status(400).send({ status: false, message: "email and password is required" })
+        }
+        if (!emailId) {
+            return res.status(400).send({ status: false, message: "email is required" })
+        }
+        if (!password) {
+            return res.status(400).send({ status: false, message: "password is required" })
+        }
+
+        let user = await userModel.findOne({ emailId: emailId, password: password });
+        if (!user) {
+            return res.status(400).send({ status: false, message: "email or password is incorrect" });
+        }
+
+        let token = jwt.sign({
+            userId: user._id.toString()
+        }, "functionup-secret-key", { expiresIn: '30m' });
+
+        return res.setHeader("x-api-key", token);
+        res.status(200).send({ status: true, message: "Success", data: token });
+    } catch (error) {
+        return res.status(500).send({ status: false, message: error.message });
+    }
 };
 
 
-module.exports = { createUser }
-module.exports.loginUser = loginUser
+module.exports = { createUser, loginUser }
 
 

@@ -9,12 +9,14 @@ const authentication = async function(req, res, next){
         if(!token){
             res.status(401).send({status: false, message: "token must be present in request headers"})
         }
-        jwt.verify(token, "functionup-secret-key", (err, decode)=> {
-            if(err){
-                return res.status(400).send({status: false, message: err.message})
+        jwt.verify(token, "functionup-secret-key", (error, decoded)=> {
+            if(error){
+                return res.status(400).send({status: false, message: error.message})
             }
-            (decode == true)
-            next()
+            else{
+                req.decoded = decoded
+                next()   
+            }
         })
     } catch (error) {
         res.status(500).send({status: false, message: "Authentication failure", message: error.message})
