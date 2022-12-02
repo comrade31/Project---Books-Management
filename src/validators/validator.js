@@ -19,14 +19,14 @@ const isIdValid = function (value) {
 
 const isValidString = function (value) {
   if (typeof value === "undefined" || value === null) return false;
-  if (typeof value === "string" && value.trim().length === 0) return false;
+  //if (typeof value === "string" && value.trim().length === 0) return false;
   return true;
 };
 
 //==============================// isValidName //===============================
 
 const isValidName = function (name) {
-  if (/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/.test(name)) {
+  if (/^[a-zA-Z ,.'-]+$/.test(name)) {
     return true;
   }
 };

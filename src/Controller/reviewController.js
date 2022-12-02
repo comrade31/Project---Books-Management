@@ -40,7 +40,15 @@ const ceateReview = async function (req, res) {
         let finalResult = { bookId: bookId, reviewedBy: reviewedBy, reviewedAt: Date.now(), rating: rating, review: review }
 
         const createReview = await reviewModel.create(finalResult)
-        return res.status(201).send({ status: true, message: "Success", data: createReview })
+        let obj = {}
+        obj._id = createReview._id
+        obj.bookId = createReview.bookId
+        obj.reviewedBy = createReview.reviewedBy
+        obj.reviewedAt = createReview.reviewedAt
+        obj.rating = createReview.rating
+        obj.review = createReview.review
+
+        return res.status(201).send({ status: true, message: "Success", data: obj })
     }
     catch (error) {
         return res.status(500).send({ status: false, message: error.message })
