@@ -96,30 +96,30 @@ const createUser = async function (req, res) {
 
 const loginUser = async function (req, res) {
     try {
-        let emailId = req.body.email;
+        let email = req.body.email;
         let password = req.body.password;
 
         if (Object.keys(req.body).length == 0) {
             return res.status(400).send({ status: false, message: "email and password is required" })
         }
-        if (!emailId) {
+        if (!email) {
             return res.status(400).send({ status: false, message: "email is required" })
         }
         if (!password) {
             return res.status(400).send({ status: false, message: "password is required" })
         }
 
-        let user = await userModel.findOne({ emailId: emailId, password: password });
+        let user = await userModel.findOne({ email: email, password: password });
         if (!user) {
             return res.status(400).send({ status: false, message: "email or password is incorrect" });
         }
-
         let token = jwt.sign({
             userId: user._id.toString()
         }, "functionup-secret-key", { expiresIn: '30m' });
 
-        return res.setHeader("x-api-key", token);
+        res.setHeader("x-api-key", token);
         res.status(200).send({ status: true, message: "Success", data: token });
+
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message });
     }

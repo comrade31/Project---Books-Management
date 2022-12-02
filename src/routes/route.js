@@ -10,16 +10,18 @@ router.post("/register",  userController.createUser)
 //<<<<<<<<------------------- Login-User -------------------->>>>>>>>>>>>>
 router.post("/login", userController.loginUser)
 
-router.post("/books", middleware.authentication, middleware.authorisation, bookController.createBook)
+//<<<<<<<<------------------- Book Api -------------------->>>>>>>>>>>>>
+router.post("/books", middleware.authentication, bookController.createBook)
 
 router.get("/books", middleware.authentication,  bookController.getBookDetails)
 
 router.get("/books/:bookId", bookController.getBookByParams)
 
-router.put("/books/:bookId",middleware.authentication, middleware.authorisation, bookController.updateBook)
+router.put("/books/:bookId",middleware.authentication, bookController.updateBook)
 
-router.delete("/books/:bookId",middleware.authentication, middleware.authorisation, bookController.deleteBook)
+router.delete("/books/:bookId",middleware.authentication, bookController.deleteBook)
 
+//<<<<<<<<------------------- Review Api -------------------->>>>>>>>>>>>>
 router.post("/books/:bookId/review", reviewController.ceateReview)
 
 router.put("/books/:bookId/review/:reviewId", reviewController.updateReview)
