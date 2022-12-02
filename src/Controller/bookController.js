@@ -76,13 +76,13 @@ const getBookByParams = async function (req, res) {
             return res.status(400).send({ status: false, message: "Invalid Book-Id !" })
         }
         // finding Books -
-        const findBook = await bookModel.findOne({ _id: bookId }).select({ __v: 0, deletedAt: 0, ISBN: 0 })
+        const findBook = await bookModel.findOne({ _id: bookId , isDeleted:false }).select({ __v: 0, deletedAt: 0, ISBN: 0 })
         if (!findBook) {
             return res.status(404).send({ status: false, message: "No Book found !" })
         }
 
         // finding Review -
-        const findReview = await reviewModel.find({ bookId: bookId })
+        const findReview = await reviewModel.find({ bookId: bookId , isDeleted:false})
         let finalData = { findBook, reviewsData: findReview }
         return res.status(200).send({ status: true, message: "Books list", data: finalData })
     } catch (error) {
