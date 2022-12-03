@@ -47,7 +47,6 @@ const isValidPincode = function (pincode) {
     }
    }
 
-
 //==============================// isValidPassword //===============================
 
    const isValidPassword = function (pwd) {
@@ -91,3 +90,4 @@ const isValidPincode = function (pincode) {
 //=============================// module exports //==============================
 
 module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode, isValidISBN, isValidDate,isValidRating}
+
