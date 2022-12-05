@@ -13,7 +13,7 @@ const authentication = async function(req, res, next){
             if(error){
                 return res.status(400).send({status: false, message: error.message})
             }
-            else{
+            else{  
                 req.decoded = decoded
                 return next()   
             }

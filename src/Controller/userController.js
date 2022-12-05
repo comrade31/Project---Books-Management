@@ -61,7 +61,7 @@ const createUser = async function (req, res) {
         }
         // Validaton for Address -
         if (address) {
-            if (address.street && address.city && address.pincode) {
+           
                 if (address.street) {
                     if (!isValidString(userData.address.street)) {
                         return res.status(400).send({ status: false, message: "Enter a valid Street" })
@@ -77,10 +77,8 @@ const createUser = async function (req, res) {
                         return res.status(400).send({ status: false, message: "Enter Valid Pincode !" })
                     }
                 }
-            } else {
-                return res.status(400).send({ status: false, message: "Enter Address in a Valid !" })
-            }
-        }
+            } 
+        
 
         const createUser = await userModel.create(userData)
         res.status(201).send({ status: true, message: 'Success', data: createUser })
