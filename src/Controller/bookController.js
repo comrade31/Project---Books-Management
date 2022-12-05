@@ -99,7 +99,8 @@ const getBookByParams = async function (req, res) {
 
         // finding Review -
         const findReview = await reviewModel.find({ bookId: bookId , isDeleted:false})
-        let finalData = { findBook, reviewsData: findReview }
+        let finalData = findBook._doc;
+        finalData.reviewData = findReview
         return res.status(200).send({ status: true, message: "Books list", data: finalData })
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
