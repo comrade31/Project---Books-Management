@@ -9,13 +9,12 @@ const { isIdValid, isValidString, isValidISBN, isValidDate, isValidName } = requ
 const createBook = async function (req, res) {
     try {
         const data = req.body
-        const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } = data
 
         // Validaton for Body -
         if (Object.keys(data).length == 0) {
             return res.status(400).send({ status: false, message: "please enter some data in request body" })
         }
-
+        const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } = data
         // Validaton for Title -
         if (!title) return res.status(400).send({ status: false, message: "Title must requied !" })
         if (!isValidString(title) || !isValidName(title)) return res.status(400).send({ status: false, message: "Please Enter valid Title" })
@@ -30,7 +29,7 @@ const createBook = async function (req, res) {
         if (!userId) return res.status(400).send({ status: false, message: "please enter userId" })
         if (!isIdValid(userId)) return res.status(400).send({ status: false, message: "please enter valid userId" })
 
-        // AUTHORIZATION-
+        // AUTHORIZATION -
         let userData = await userModel.findById(userId)
         if (!userData) return res.status(404).send({ status: false, message: "no user found" })
         let checkUserId = req.decoded.userId
@@ -116,7 +115,7 @@ const updateBook = async function (req, res) {
         if (!bookId) return res.status(400).send({ status: false, message: "BookId is required" })
         if (!isIdValid(bookId)) return res.status(400).send({ status: false, message: "Invalid BookId" })
         // AUTHORIZATION-
-        let bookData = await bookModel.findById(bookId)
+        let bookData = await bookModel.findById({ _id: bookId, isDeleted: false })
         if (!bookData) return res.status(404).send({ status: false, message: "no book found" })
         let checkUserId = bookData.userId
         if (checkUserId.toString() !== req.decoded.userId) return res.status(403).send({ status: false, message: "you dont have access" })
@@ -182,7 +181,7 @@ const deleteBook = async function (req, res) {
             return res.status(400).send({ status: false, message: "bookId is not valid!" })
         }
 
-        const bookDetails = await bookModel.findById(bookId)
+        const bookDetails = await bookModel.findById({ _id: bookId, isDeleted: false })
         if (!bookDetails) return res.status(404).send({ status: false, message: "no book found" })
         // AUTHORIZATION
         let checkUserId = bookDetails.userId

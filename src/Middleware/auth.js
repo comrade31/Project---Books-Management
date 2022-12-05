@@ -11,7 +11,7 @@ const authentication = async function(req, res, next){
         }
         jwt.verify(token, "functionup-secret-key", (error, decoded)=> {
             if(error){
-                return res.status(400).send({status: false, message: error.message})
+                return res.status(401).send({status: false, message: error.message})
             }
             else{  
                 req.decoded = decoded

@@ -103,13 +103,16 @@ const loginUser = async function (req, res) {
         if (!email) {
             return res.status(400).send({ status: false, message: "email is required" })
         }
+        if(!isValidEmail(email)) {
+            return res.status(400).send({ status: false, message: "email is Invalid" })
+        }
         if (!password) {
             return res.status(400).send({ status: false, message: "password is required" })
         }
 
         let user = await userModel.findOne({ email: email, password: password });
         if (!user) {
-            return res.status(401).send({ status: false, message: "email or password is incorrect" });
+            return res.status(400).send({ status: false, message: "email or password is incorrect" });
         }
         let token = jwt.sign({
             userId: user._id.toString()

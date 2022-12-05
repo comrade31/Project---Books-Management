@@ -32,11 +32,6 @@ const ceateReview = async function (req, res) {
             return res.status(400).send({ status: false, message: "Please Enter Valid review !" })
         }
 
-        let findBook = await bookModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $inc: { reviews: 1 } })
-        if (!findBook) {
-            return res.status(404).send({ status: false, message: "No book found !" })
-        }
-
         let finalResult = { bookId: bookId, reviewedBy: reviewedBy, reviewedAt: Date.now(), rating: rating, review: review }
 
         const createReview = await reviewModel.create(finalResult)
@@ -48,6 +43,11 @@ const ceateReview = async function (req, res) {
         obj.rating = createReview.rating
         obj.review = createReview.review
 
+      
+        let findBook = await bookModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $inc: { reviews: 1 } })
+        if (!findBook) {
+            return res.status(404).send({ status: false, message: "No book found !" })
+        }
         return res.status(201).send({ status: true, message: "Success", data: obj })
     }
     catch (error) {
@@ -101,7 +101,7 @@ const updateReview = async function (req, res) {
                 review: review
             }, { new: true }
         )
-        if (!updateReview) return res.status(404).send({ status: false, message: "review not found" })
+        if (!updateReview) return res.status(404).send({ status: false, message: "Updation Failed" })
         res.status(200).send({ status: true, message: "Success", data: updateReview })
 
     } catch (err) {
