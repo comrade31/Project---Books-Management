@@ -4,6 +4,7 @@ const userController =  require ("../controller/userController")
 const bookController = require ("../controller/bookController")
 const reviewController = require ("../controller/reviewController")
 const middleware = require("../Middleware/auth")
+const aws = require("../Controller/awsController")
 
 //<<<<<<<<------------------- User Api -------------------->>>>>>>>>>>>>
 router.post("/register",  userController.createUser)
@@ -12,6 +13,8 @@ router.post("/login", userController.loginUser)
 
 //<<<<<<<<------------------- Book Api -------------------->>>>>>>>>>>>>
 router.post("/books", middleware.authentication, bookController.createBook)
+
+router.post("/write-file-aws",aws.uploadImage)
 
 router.get("/books", middleware.authentication,  bookController.getBookDetails)
 

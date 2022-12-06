@@ -1,7 +1,7 @@
 const bookModel = require("../Model/bookModel")
 const userModel = require("../Model/userModel")
 const reviewModel = require("../Model/reviewModel")
-const { isIdValid, isValidString, isValidISBN, isValidDate, isValidName } = require("../validators/validator")
+const { isIdValid, isValidString, isValidISBN, isValidDate, isValidName,isValidImage } = require("../validators/validator")
 
 
 //<<<<<<<<------------------- Create-Book -------------------->>>>>>>>>>>>>
@@ -14,12 +14,15 @@ const createBook = async function (req, res) {
         if (Object.keys(data).length == 0) {
             return res.status(400).send({ status: false, message: "please enter some data in request body" })
         }
-        const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } = data
+        const { title, excerpt, userId, ISBN, category, subcategory, releasedAt,bookCover } = data
         // Validaton for Title -
         if (!title) return res.status(400).send({ status: false, message: "Title must requied !" })
         if (!isValidString(title) || !isValidName(title)) return res.status(400).send({ status: false, message: "Please Enter valid Title" })
         let checkTitle = await bookModel.findOne({ title: title })
         if (checkTitle) return res.status(400).send({ status: false, message: "title is already exist" })
+
+        // Validaton for bookCover -
+        if (!isValidImage(bookCover)) return res.status(400).send({ status: false, message: "Please Enter valid image url" })
 
         // Validaton for Excerpt -
         if (!excerpt) return res.status(400).send({ status: false, message: "excerpt must requied !" })

@@ -8,7 +8,6 @@ const isValidEmail = function (value) {
   if (emailRegex.test(value)) return true;
 };
 
-
 //============================// idCharacterValid //============================
 
 const isIdValid = function (value) {
@@ -87,7 +86,18 @@ const isValidPincode = function (pincode) {
           return true
       }
 
+
+//=============================// isValidImage //==============================
+     
+      const isValidImage = function(value){
+        let imageRegex = /^(https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$)/
+        if(imageRegex.test(value)){
+          return true
+        }else {
+          return false
+        }
+      }
 //=============================// module exports //==============================
 
-module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode, isValidISBN, isValidDate,isValidRating}
+module.exports = { isValidEmail, isIdValid, isValidString,isValidPassword,isValidName,isValidMobile,isValidPincode, isValidISBN, isValidDate,isValidRating,isValidImage}
 

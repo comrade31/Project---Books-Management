@@ -4,8 +4,11 @@ const mongoose = require("mongoose")
 const route = require("./routes/route")
 const jwt = require('jsonwebtoken')
 const app = express()
+const multer= require("multer");
+const { AppConfig } = require('aws-sdk');
 
 app.use(bodyParser.json())
+app.use(multer().any())
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect("mongodb+srv://Comrade31:B93EgLm7P9wmaRx@cluster-lithium.qso5elz.mongodb.net/group36Database",{useNewUrlParser:true})
